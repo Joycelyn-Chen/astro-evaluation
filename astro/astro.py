@@ -72,6 +72,7 @@ class ASTRO(object):
         for i, obj in enumerate(self.sequences[sequence][obj_type]):
             all_objs[i, ...] = np.array(Image.open(obj))
             obj_id.append(''.join(obj.split('/')[-1].split('.')[:-1]))
+        
         return all_objs, obj_id
 
     def get_all_images(self, sequence):

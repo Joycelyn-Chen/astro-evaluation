@@ -11,7 +11,10 @@ class Results(object):
     def _read_mask(self, sequence, frame_id):
         try:
             mask_path = os.path.join(self.root_dir, sequence, f'{frame_id}.png')
-            return np.array(Image.open(mask_path))
+            
+            return np.array(Image.open(mask_path).convert('L'))
+            # return np.array(Image.open(mask_path))
+
         except IOError as err:
             sys.stdout.write(sequence + " frame %s not found!\n" % frame_id)
             sys.stdout.write("The frames have to be indexed PNG files placed inside the corespondent sequence "
@@ -24,8 +27,18 @@ class Results(object):
         masks = np.zeros((len(masks_id), *mask_0.shape))
         for ii, m in enumerate(masks_id):
             masks[ii, ...] = self._read_mask(sequence, m)
-        num_objects = int(np.max(masks))
+        # num_objects = int(np.max(masks))
+        num_objects = 1
+
+        #DEBUG
+        print(f"num-object: {num_objects}\n")
+        
         tmp = np.ones((num_objects, *masks.shape))
         tmp = tmp * np.arange(1, num_objects + 1)[:, None, None, None]
+
         masks = (tmp == masks[None, ...]) > 0
+
+        #DEBUG
+        # print(f"masks: {masks[0][0][0]}")
+
         return masks

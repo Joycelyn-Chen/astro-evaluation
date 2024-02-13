@@ -35,8 +35,13 @@ else:
     print(f'Evaluating sequences for the {args.task} task...')
     # Create dataset and evaluate
     dataset_eval = ASTROEvaluation(astro_root=args.astro_path, task=args.task, gt_set=args.set)
-    metrics_res = dataset_eval.evaluate(args.results_path)
+
+    metrics_res = dataset_eval.evaluate(args.results_path, debug = True)
     J, F = metrics_res['J'], metrics_res['F']
+
+    #DEBUG
+    print("Done evaluation.")
+    print(f"J: {J}, F: {F}\n\n")
 
     # Generate dataframe for the general results
     g_measures = ['J&F-Mean', 'J-Mean', 'J-Recall', 'J-Decay', 'F-Mean', 'F-Recall', 'F-Decay']
