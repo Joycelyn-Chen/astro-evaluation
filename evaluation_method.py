@@ -39,9 +39,9 @@ else:
     metrics_res = dataset_eval.evaluate(args.results_path, debug = True)
     J, F = metrics_res['J'], metrics_res['F']
 
-    #DEBUG
-    print("Done evaluation.")
-    print(f"J: {J}, F: {F}\n\n")
+    # #DEBUG
+    # print("Done evaluation.")
+    # print(f"J: {J}, F: {F}\n\n")
 
     # Generate dataframe for the general results
     g_measures = ['J&F-Mean', 'J-Mean', 'J-Recall', 'J-Decay', 'F-Mean', 'F-Recall', 'F-Decay']

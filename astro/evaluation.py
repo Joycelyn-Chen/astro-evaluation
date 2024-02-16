@@ -26,15 +26,15 @@ class ASTROEvaluation(object):
 
     @staticmethod
     def _evaluate_semisupervised(all_gt_masks, all_res_masks, all_void_masks, metric):
-        #DEBUG
-        print(f"all_res_masks.shape: {all_res_masks.shape}")
-        print(f"all_gt_masks.shape: {all_gt_masks.shape}\n\n")
+        # #DEBUG
+        # print(f"all_res_masks.shape: {all_res_masks.shape}")
+        # print(f"all_gt_masks.shape: {all_gt_masks.shape}\n\n")
 
         if all_res_masks.ndim == 4:
             all_res_masks = np.squeeze(all_res_masks, axis=0)
         
         #DEBUG
-        print(f"all_res_masks.shape: {all_res_masks.shape}")
+        # print(f"all_res_masks.shape: {all_res_masks.shape}")
 
         if all_res_masks.shape[0] > all_gt_masks.shape[0]:
             sys.stdout.write("\nIn your PNG files there is an index higher than the number of objects in the sequence!")
@@ -45,13 +45,10 @@ class ASTROEvaluation(object):
         j_metrics_res, f_metrics_res = np.zeros(all_gt_masks.shape[:2]), np.zeros(all_gt_masks.shape[:2])
         for ii in range(all_gt_masks.shape[0]):
             if 'J' in metric:
-                # DEBUG
-                print("Calculating J iou..")
+                
                 j_metrics_res[ii, :] = db_eval_iou(all_gt_masks[ii, ...], all_res_masks[ii, ...], all_void_masks)
 
             if 'F' in metric:
-                # DEBUG
-                print("Calculating F boundary..")
                 f_metrics_res[ii, :] = db_eval_boundary(all_gt_masks[ii, ...], all_res_masks[ii, ...], all_void_masks)
         return j_metrics_res, f_metrics_res
 
@@ -94,26 +91,29 @@ class ASTROEvaluation(object):
 
         # Sweep all sequences
         results = Results(root_dir=res_path)
+
+        print(res_path)
+        print(self.dataset.get_path())
         for seq in tqdm(list(self.dataset.get_sequences())):
             all_gt_masks, all_void_masks, all_masks_id = self.dataset.get_all_masks(seq, False)
             # all_gt_masks, all_void_masks, all_masks_id = self.dataset.get_all_masks(seq, True)
-            if self.task == 'semi-supervised' or self.task == 'supervised':
+            # if self.task == 'semi-supervised' or self.task == 'supervised':
                 # all_gt_masks, all_masks_id = all_gt_masks[:, 1:-1, :, :], all_masks_id[1:-1]
                 #DEBUG
-                print(f"all_masks_id: {len(all_masks_id)}")     # cut off the first and the last frame
+                # print(f"all_masks_id: {len(all_masks_id)}")     # cut off the first and the last frame
 
             all_res_masks = results.read_masks(seq, all_masks_id)
 
-            #DEBUG
-            print(f"Read all masks...\n")
-            print(f"all_res_masks.shape[0]: {all_res_masks.shape[0]}")
-            print(f"all_gt_masks.shape[0]: {all_gt_masks.shape[0]}")
+            # #DEBUG
+            # print(f"Read all masks...\n")
+            # print(f"all_res_masks.shape[0]: {all_res_masks.shape[0]}")
+            # print(f"all_gt_masks.shape[0]: {all_gt_masks.shape[0]}")
 
             if self.task == 'unsupervised':
                 j_metrics_res, f_metrics_res = self._evaluate_unsupervised(all_gt_masks, all_res_masks, all_void_masks, metric)
             elif self.task == 'semi-supervised' or self.task == 'supervised':
                 # DEBUG
-                print("Evaluating semisupervised or supervised")
+                # print("Evaluating semisupervised or supervised")
 
                 j_metrics_res, f_metrics_res = self._evaluate_semisupervised(all_gt_masks, all_res_masks, None, metric)
             for ii in range(all_gt_masks.shape[0]):

@@ -10,7 +10,8 @@ class ASTRO(object):
     # TASKS = ['semi-supervised', 'unsupervised']
     # VOID_LABEL = 255
     DATASET_WEB = 'https://google.com'
-
+    def get_path(self):
+        return self.root
     def __init__(self, root, task='supervised', subset='test-dev', sequences='all', codalab=False):
         """
         Class to read the ASTRO dataset
@@ -80,20 +81,23 @@ class ASTRO(object):
 
     def get_all_masks(self, sequence, separate_objects_masks=False):
         masks, masks_id = self._get_all_elements(sequence, 'masks')
+        # print(np.max(masks))
+        # print(masks.shape)
         masks_void = np.zeros_like(masks)
 
         # Separate void and object masks
-        for i in range(masks.shape[0]):
-            masks_void[i, ...] = masks[i, ...] == 255
-            masks[i, masks[i, ...] == 255] = 0
+        # for i in range(masks.shape[0]):
+        #     masks_void[i, ...] = masks[i, ...] == 255
+        #     masks[i, masks[i, ...] == 255] = 0
 
-        if separate_objects_masks:
-            num_objects = int(np.max(masks[0, ...]))
-            tmp = np.ones((num_objects, *masks.shape))
-            tmp = tmp * np.arange(1, num_objects + 1)[:, None, None, None]
-            masks = (tmp == masks[None, ...])
-            masks = masks > 0
-        return masks, masks_void, masks_id
+        # if separate_objects_masks:
+        #     num_objects = int(np.max(masks[0, ...]))
+        #     tmp = np.ones((num_objects, *masks.shape))
+        #     tmp = tmp * np.arange(1, num_objects + 1)[:, None, None, None]
+        #     masks = (tmp == masks[None, ...])
+        #     masks = masks > 0
+        # return masks, masks_void, masks_id
+        return masks/255.0,masks_void,masks_id
 
     def get_sequences(self):
         for seq in self.sequences:
