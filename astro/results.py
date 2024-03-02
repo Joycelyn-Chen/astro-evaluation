@@ -27,20 +27,8 @@ class Results(object):
         masks = np.zeros((len(masks_id), *mask_0.shape))
         for ii, m in enumerate(masks_id):
             temp = self._read_mask(sequence, m)
-            #print(np.max(temp))
+            
             masks[ii, ...] = temp/255.0
-        # num_objects = int(np.max(masks))
         num_objects = 1
-
-        #DEBUG
-        # print(f"num-object: {num_objects}\n")
-        
-        # tmp = np.ones((num_objects, *masks.shape))
-        # tmp = tmp * np.arange(1, num_objects + 1)[:, None, None, None]
-
-        # masks = (tmp == masks[None, ...]) > 0
-
-        #DEBUG
-        # print(f"masks: {masks[0][0][0]}")
 
         return masks

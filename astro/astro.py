@@ -81,8 +81,7 @@ class ASTRO(object):
 
     def get_all_masks(self, sequence, separate_objects_masks=False):
         masks, masks_id = self._get_all_elements(sequence, 'masks')
-        # print(np.max(masks))
-        # print(masks.shape)
+
         masks_void = np.zeros_like(masks)
 
         # Separate void and object masks

@@ -15,8 +15,6 @@ def db_eval_iou(annotation, segmentation, void_pixels=None):
     """
     assert annotation.shape == segmentation.shape, \
         f'Annotation({annotation.shape}) and segmentation:{segmentation.shape} dimensions do not match.'
-    # print(np.max(annotation))
-    # print(np.max(segmentation))
     annotation = annotation.astype(bool)
     segmentation = segmentation.astype(bool)
 
