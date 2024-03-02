@@ -92,8 +92,8 @@ class ASTROEvaluation(object):
         # Sweep all sequences
         results = Results(root_dir=res_path)
 
-        print(res_path)
-        print(self.dataset.get_path())
+        # print(res_path)
+        # print(self.dataset.get_path())
         for seq in tqdm(list(self.dataset.get_sequences())):
             all_gt_masks, all_void_masks, all_masks_id = self.dataset.get_all_masks(seq, False)
             # all_gt_masks, all_void_masks, all_masks_id = self.dataset.get_all_masks(seq, True)
